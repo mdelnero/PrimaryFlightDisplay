@@ -13,7 +13,11 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Maximum Gauge Value.</summary>
-        protected long maximumValue = 1000;
+        protected long maximumValue = 100;
+
+        /// <summary>
+        /// Never Exceed Value.</summary>
+        protected long neverExceedValue = 100;
 
         /// <summary>
         /// Gets or Sets Gauge Value.</summary>
@@ -36,7 +40,7 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Gets or Sets Minimum Gauge Value.</summary>
-        public long MinimumValue
+        public virtual long MinimumValue
         {
             get { return minimumValue; }
             set { minimumValue = value; }
@@ -44,10 +48,18 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Gets or Sets Maximum Gauge Value.</summary>
-        public long MaximumValue
+        public virtual long MaximumValue
         {
             get { return maximumValue; }
             set { maximumValue = value; }
+        }
+
+        /// <summary>
+        /// Never Exceed Value.</summary>
+        public virtual long NeverExceedValue
+        {
+            get { return neverExceedValue; }
+            set { neverExceedValue = value; }
         }
 
         /// <summary>

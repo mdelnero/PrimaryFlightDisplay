@@ -14,5 +14,9 @@ namespace PrimaryFlightDisplay
         /// <summary>
         /// Maximum Gauge Value.</summary>
         long MaximumValue { get; set; }
+
+        /// <summary>
+        /// Never Exceed Value.</summary>
+        long NeverExceedValue { get; set; }
     }
 }

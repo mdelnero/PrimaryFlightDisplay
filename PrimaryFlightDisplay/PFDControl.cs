@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using PrimaryFlightDisplay.Gauges;
 
 namespace PrimaryFlightDisplay
 {
     public partial class PFDControl : UserControl
     {
-        private readonly Brush skyBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
+        /// <summary>
+        /// AirSpeed Gauge.</summary>
+        public VerticalBar AirspeedGauge = new VerticalBar();
 
-        private readonly Brush groundBrush = new SolidBrush(Color.FromArgb(153, 102, 51));
+        /// <summary>
+        /// Altitude Gauge.</summary>
+        public VerticalBar AltitudeGauge = new VerticalBar();
 
-        public VerticalGauge altitudeGauge = new VerticalGauge();
-        public VerticalGauge speedGauge = new VerticalGauge();
-        public Compass compassGauge = new Compass();
+        /// <summary>
+        /// Compass.</summary>
+        public Compass CompassGauge = new Compass();
 
-        private List<IGraphicGauge> gaugeList = new List<IGraphicGauge>();
+        /// <summary>
+        /// Artificial Horizon.</summary>
+        public ArtificialHorizon Horizon = new ArtificialHorizon();
 
         public PFDControl()
         {
@@ -23,21 +30,27 @@ namespace PrimaryFlightDisplay
 
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
 
-            altitudeGauge.DockPosition = GaugeDockPosition.DockRight;
-            altitudeGauge.MinimumValue = 0;
-            altitudeGauge.MaximumValue = 500;
-            altitudeGauge.GaugeIncrement = 10;
-
-            speedGauge.DockPosition = GaugeDockPosition.DockLeft;
-            altitudeGauge.MinimumValue = 0;
-            speedGauge.MaximumValue = 20;
-
-            gaugeList.Add(altitudeGauge);
-            gaugeList.Add(speedGauge);
-            // gaugeList.Add(compassGauge);
-
+            InitializeGauges();
         }
 
+        /// <summary>
+        /// Initialize Gauges.</summary>
+        protected void InitializeGauges()
+        {
+            AltitudeGauge.DockPosition = VerticalBar.GaugeDockPosition.DockRight;
+            AltitudeGauge.MinimumValue = 0;
+            AltitudeGauge.MaximumValue = 200;
+            AltitudeGauge.MajorGraduation = 20;
+            AltitudeGauge.NeverExceedValue = 100;
+
+            AirspeedGauge.DockPosition = VerticalBar.GaugeDockPosition.DockLeft;
+            AirspeedGauge.MinimumValue = 0;
+            AirspeedGauge.MaximumValue = 20;
+            AirspeedGauge.MajorGraduation = 5;            
+        }
+
+        /// <summary>
+        /// Redraw User Control.</summary>
         public void Redraw()
         {
             Invalidate();
@@ -50,10 +63,34 @@ namespace PrimaryFlightDisplay
 
         private void GraphicUserControl_Resize(object sender, EventArgs e)
         {
-            foreach (IGraphicGauge gauge in gaugeList)
-            {
-                gauge.SetParentSize(this.Width, this.Height);
-            }
+            Horizon.SetEnvelope(this.DisplayRectangle);
+
+            Rectangle altitudeRect = new Rectangle();
+
+            altitudeRect.Width = (int)(this.Width * 0.15f);
+            altitudeRect.Height = (int)(this.Height * 0.5f);
+            altitudeRect.Y = (this.Height - altitudeRect.Height) / 2;
+            altitudeRect.X = (this.Width - altitudeRect.Width);
+
+            AltitudeGauge.SetEnvelope(altitudeRect);
+
+            Rectangle airspeedRect = new Rectangle();
+
+            airspeedRect.Width = (int)(this.Width * 0.15f);
+            airspeedRect.Height = (int)(this.Height * 0.5f);
+            airspeedRect.Y = (this.Height - airspeedRect.Height) / 2;
+            airspeedRect.X = 0;
+            
+            AirspeedGauge.SetEnvelope(airspeedRect);
+
+            Rectangle compassRect = new Rectangle();
+
+            compassRect.Width = 350;
+            compassRect.Height = 50;
+            compassRect.Y = (this.Bottom - compassRect.Height);
+            compassRect.X = (this.Right - compassRect.Width) / 2; ;
+
+            CompassGauge.SetEnvelope(compassRect);
 
             Redraw();
         }
@@ -62,13 +99,10 @@ namespace PrimaryFlightDisplay
         {
             Graphics g = e.Graphics;
 
-            g.FillRectangle(skyBrush, 0, 0, this.Width, this.Height / 2);
-            g.FillRectangle(groundBrush, 0, this.Height / 2, this.Width, this.Height);
-
-            foreach (IGraphicGauge gauge in gaugeList)
-            {
-                gauge.Draw(g);
-            }
+            Horizon.Draw(g);
+            AirspeedGauge.Draw(g);
+            AltitudeGauge.Draw(g);
+            CompassGauge.Draw(g);
         }
 
         private void GraphicUserControl_MouseDown(object sender, MouseEventArgs e)

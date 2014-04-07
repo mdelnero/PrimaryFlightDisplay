@@ -6,32 +6,44 @@ namespace PrimaryFlightDisplay
     public class GraphicGauge : Gauge, IGraphicGauge
     {
         /// <summary>
-        /// Gauge Increment.
+        /// Major Graduation.
         /// </summary>
-        protected long gaugeIncrement = 1;
+        protected long majorGraduation = 10;
 
         /// <summary>
-        /// Gets or Sets the Gauge Increment.
+        /// Gets or Sets the Major Graduation.
         /// </summary>
-        public long GaugeIncrement 
+        public long MajorGraduation 
         {
             get
             {
-                return gaugeIncrement;
+                return majorGraduation;
             }
             set
             {
-                gaugeIncrement = value;
+                majorGraduation = value;
             }
         }
 
         /// <summary>
-        /// Parent Graphics Width.</summary>
-        protected int parentWidth;
+        /// Minor Graduation.
+        /// </summary>
+        protected long minorGraduation = 1;
 
         /// <summary>
-        /// Parent Graphics Heigth.</summary>
-        protected int parentHeigth;
+        /// Gets or Sets the Minor Graduation.
+        /// </summary>
+        public long MinorGraduation
+        {
+            get
+            {
+                return minorGraduation;
+            }
+            set
+            {
+                minorGraduation = value;
+            }
+        }
 
         /// <summary>
         /// Drawing Envelope.</summary>
@@ -46,25 +58,32 @@ namespace PrimaryFlightDisplay
         }
 
         /// <summary>
-        /// Informs Parent Drawing size.</summary>
-        /// <param name="parentWidth">Parent Graphics Width.</param>
-        /// <param name="parentHeigth">Parent Graphics Heigth.</param>
-        public virtual void SetParentSize(int parentWidth, int parentHeigth)
+        /// Sets Drawing Envelope.</summary>
+        /// <param name="envelope">Drawing Envelope.</param>
+        public virtual void SetEnvelope(Rectangle envelope)
         {
-            this.parentWidth = parentWidth;
-            this.parentHeigth = parentHeigth;
-
-            envelope = MakeEnvelope();
+            this.envelope = envelope;
         }
 
         /// <summary>
-        /// Makes the Drawing Envelope.</summary>
-        /// <param name="parentWidth">Parent Graphics Width.</param>
-        /// <param name="parentHeigth">Parent Graphics Heigth.</param>
-        /// <returns>The Drawing Envelope.</returns>
-        public virtual Rectangle MakeEnvelope()
+        /// Draw Major Graduation.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        public virtual void DrawMajorGraduation(Graphics g, long graduationValue, int position)
         {
-            return new Rectangle(0, 0, parentWidth, parentHeigth);
+        }
+
+        // <summary>
+        /// Draw Current Value Indicator.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        public virtual void DrawCurrentValueIndicator(Graphics g)
+        {
+        }
+
+        /// <summary>
+        /// Draw Tape.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        public virtual void DrawTape(Graphics g)
+        {
         }
 
         /// <summary>

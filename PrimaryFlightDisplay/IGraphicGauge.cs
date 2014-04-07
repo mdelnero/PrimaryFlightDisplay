@@ -2,29 +2,31 @@
 
 namespace PrimaryFlightDisplay
 {
-    public interface IGraphicGauge
+    public interface IGraphicGauge : IGraphicControl
     {
         /// <summary>
-        /// Gets or Sets the Gauge Increment.
+        /// Gets or Sets the Major Graduation.
         /// </summary>
-        long GaugeIncrement { get; set; }
+        long MajorGraduation { get; set; }
 
         /// <summary>
-        /// Informs Parent Drawing size.</summary>
-        /// <param name="parentWidth">Parent Graphics Width.</param>
-        /// <param name="parentHeigth">Parent Graphics Heigth.</param>
-        void SetParentSize(int parentWidth, int parentHeigth);
+        /// Gets or Sets the Minor Graduation.
+        /// </summary>
+        long MinorGraduation { get; set; }
 
         /// <summary>
-        /// Makes the Drawing Envelope.</summary>
-        /// <param name="parentWidth">Parent Graphics Width.</param>
-        /// <param name="parentHeigth">Parent Graphics Heigth.</param>
-        /// <returns>The Drawing Envelope.</returns>
-        Rectangle MakeEnvelope();
-
-        /// <summary>
-        /// Draw Function.</summary>
+        /// Draw Major Graduation.</summary>
         /// <param name="g">Graphics for Drawing</param>
-        void Draw(Graphics g);
+        void DrawMajorGraduation(Graphics g, long graduationValue, int position);
+
+        // <summary>
+        /// Draw Current Value Indicator.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        void DrawCurrentValueIndicator(Graphics g);
+
+        /// <summary>
+        /// Draw Tape.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        void DrawTape(Graphics g);
     }
 }
