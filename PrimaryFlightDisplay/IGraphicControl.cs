@@ -2,7 +2,10 @@
 
 namespace PrimaryFlightDisplay
 {
-    public interface IGraphicControl
+    /// <summary>
+    /// Base Graphic Control Interface.
+    /// </summary>
+    internal interface IGraphicControl
     {
         /// <summary>
         /// Sets Drawing Envelope.</summary>

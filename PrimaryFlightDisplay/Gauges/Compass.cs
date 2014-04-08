@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace PrimaryFlightDisplay.Gauges
 {
-    public class Compass : VerticalBar
+    internal class Compass : VerticalTape
     {
         /// <summary>
         /// Brush.</summary>
@@ -19,6 +19,25 @@ namespace PrimaryFlightDisplay.Gauges
             this.MaximumValue = 360;
             this.MajorGraduation = 30;
             this.NeverExceedValue = 0;
+        }
+
+        /// <summary>
+        /// New Drawing Envelope received.</summary>
+        protected override void NewEnvelope()
+        {
+            int xCenter = (envelope.Right + envelope.Left) / 2;
+
+            currentValueIndicator = new Point(xCenter - 10, envelope.Top - 22);
+
+            currentIndicator = new Point[] { 
+                    new Point(xCenter, envelope.Top),
+                    new Point(xCenter - 5, envelope.Top - 5),
+                    new Point(xCenter - 20, envelope.Top - 5),
+                    new Point(xCenter - 20, envelope.Top - 25),
+                    new Point(xCenter + 20, envelope.Top - 25),
+                    new Point(xCenter + 20, envelope.Top - 5),
+                    new Point(xCenter + 5, envelope.Top - 5)
+                };
         }
 
         /// <summary>
@@ -52,7 +71,7 @@ namespace PrimaryFlightDisplay.Gauges
             // Minor Graduation
             gradFrom = envelope.Top;
             gradTo = envelope.Top + 10;
-            int xSubGrad = pixelCoordinate + (PixelPerGraduation / 2);
+            int xSubGrad = pixelCoordinate + (pixelPerGraduation / 2);
 
             g.DrawLine(drawingPen, xSubGrad, gradFrom, xSubGrad, gradTo);
         }
@@ -85,18 +104,19 @@ namespace PrimaryFlightDisplay.Gauges
             {
                 g.SetClip(envelope);
 
+                g.FillRectangle(alphaBrush, envelope);
                 g.DrawRectangle(drawingPen, envelope);
 
                 // Previous major graduation value next to currentValue.
                 long majorGraduationValue = (currentValue / majorGraduation) * majorGraduation;
 
                 // First major graduation value on screen
-                long majorGraduationBottomInterval = envelope.Width / PixelPerGraduation / 2 * majorGraduation;
+                long majorGraduationBottomInterval = envelope.Width / pixelPerGraduation / 2 * majorGraduation;
 
                 // Current value pixel offset
-                long currentValuePixelOffset = (long)(((float)(currentValue % majorGraduation) / (float)majorGraduation) * PixelPerGraduation);
+                long currentValuePixelOffset = (long)(((float)(currentValue % majorGraduation) / (float)majorGraduation) * pixelPerGraduation);
 
-                int drawAreaLenght = (int)(majorGraduationBottomInterval * 2 * PixelPerGraduation / majorGraduation); // In Pixels
+                int drawAreaLenght = (int)(majorGraduationBottomInterval * 2 * pixelPerGraduation / majorGraduation); // In Pixels
 
                 int drawAreaPadding = (envelope.Width - drawAreaLenght) / 2;
 
@@ -107,7 +127,7 @@ namespace PrimaryFlightDisplay.Gauges
                     itemValue += majorGraduation)
                 {
                     DrawMajorGraduation(g, itemValue, pixelCoordinateBegin);
-                    pixelCoordinateBegin += PixelPerGraduation;
+                    pixelCoordinateBegin += pixelPerGraduation;
                 }
 
                 DrawTape(g);
@@ -117,26 +137,6 @@ namespace PrimaryFlightDisplay.Gauges
                 DrawCurrentValueIndicator(g);
 
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void PrepareDrawingElements()
-        {
-            int xCenter = (envelope.Right + envelope.Left) / 2;
-
-            currentValueIndicator = new Point(xCenter-10, envelope.Top - 22);
-
-            currentIndicator = new Point[] { 
-                    new Point(xCenter, envelope.Top),
-                    new Point(xCenter - 5, envelope.Top - 5),
-                    new Point(xCenter - 20, envelope.Top - 5),
-                    new Point(xCenter - 20, envelope.Top - 25),
-                    new Point(xCenter + 20, envelope.Top - 25),
-                    new Point(xCenter + 20, envelope.Top - 5),
-                    new Point(xCenter + 5, envelope.Top - 5)
-                };
         }
 
         /// <summary>

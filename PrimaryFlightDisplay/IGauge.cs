@@ -1,6 +1,9 @@
 ﻿
 namespace PrimaryFlightDisplay
 {
+    /// <summary>
+    /// Base Gauge Interface.
+    /// </summary>
     public interface IGauge
     {
         /// <summary>
@@ -18,5 +21,15 @@ namespace PrimaryFlightDisplay
         /// <summary>
         /// Never Exceed Value.</summary>
         long NeverExceedValue { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the Major Graduation.
+        /// </summary>
+        long MajorGraduation { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the Minor Graduation.
+        /// </summary>
+        long MinorGraduation { get; set; }
     }
 }

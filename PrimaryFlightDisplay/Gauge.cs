@@ -1,7 +1,12 @@
-﻿
+﻿using System;
+using System.Drawing;
+
 namespace PrimaryFlightDisplay
 {
-    public class Gauge : IGauge
+    internal class Gauge :
+        IGauge,
+        IGraphicControl,
+        IDisposable
     {
         /// <summary>
         /// Gauge Value.</summary>
@@ -17,7 +22,17 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Never Exceed Value.</summary>
-        protected long neverExceedValue = 100;
+        protected long neverExceedValue = 90;
+
+        /// <summary>
+        /// Major Graduation.
+        /// </summary>
+        protected long majorGraduation = 10;
+
+        /// <summary>
+        /// Minor Graduation.
+        /// </summary>
+        protected long minorGraduation = 5;
 
         /// <summary>
         /// Gets or Sets Gauge Value.</summary>
@@ -25,9 +40,9 @@ namespace PrimaryFlightDisplay
         {
             get
             {
-                return currentValue; 
+                return currentValue;
             }
-            set 
+            set
             {
                 if (value > maximumValue)
                     currentValue = maximumValue;
@@ -63,8 +78,74 @@ namespace PrimaryFlightDisplay
         }
 
         /// <summary>
+        /// Gets or Sets the Major Graduation.
+        /// </summary>
+        public long MajorGraduation
+        {
+            get
+            {
+                return majorGraduation;
+            }
+            set
+            {
+                majorGraduation = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the Minor Graduation.
+        /// </summary>
+        public long MinorGraduation
+        {
+            get
+            {
+                return minorGraduation;
+            }
+            set
+            {
+                minorGraduation = value;
+            }
+        }
+
+        /// <summary>
+        /// Drawing Envelope.</summary>
+        protected Rectangle envelope;
+
+        /// <summary>
+        /// Size of Major Graduation in Pixels.</summary>
+        protected int pixelPerGraduation = 40;
+
+        /// <summary>
         /// Class Constructor.</summary>
         public Gauge()
+        {
+        }
+
+        /// <summary>
+        /// Sets Drawing Envelope.</summary>
+        /// <param name="envelope">Drawing Envelope.</param>
+        public virtual void SetEnvelope(Rectangle envelope)
+        {
+            this.envelope = envelope;
+            NewEnvelope();
+        }
+
+        /// <summary>
+        /// New Drawing Envelope received.</summary>
+        protected virtual void NewEnvelope()
+        {
+        }
+
+        /// <summary>
+        /// Draw Function.</summary>
+        /// <param name="g">Graphics for Drawing</param>
+        public virtual void Draw(Graphics g)
+        {
+        }
+
+        /// <summary>
+        /// Dispose.</summary>
+        public virtual void Dispose()
         {
         }
     }

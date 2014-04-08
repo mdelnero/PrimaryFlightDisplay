@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrimaryFlightDisplay;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,18 +21,20 @@ namespace PFDDemo
 
         void UpdateAltitudeGaugeParams()
         {
-            pfdControl1.AltitudeGauge.Value = trackAltitudeValue.Value;
-            pfdControl1.AltitudeGauge.MinimumValue = trackAltitudeMin.Value;
-            pfdControl1.AltitudeGauge.MaximumValue = trackAltitudeMax.Value;
+            IPrimaryFlightDisplay pfd = pfdControl1 as IPrimaryFlightDisplay;
 
-            pfdControl1.AirspeedGauge.Value = trackAirSpeedValue.Value;
-            pfdControl1.AirspeedGauge.MinimumValue = trackAirSpeedMin.Value;
-            pfdControl1.AirspeedGauge.MaximumValue = trackAirSpeedMax.Value;
+            pfd.Altitude.Value = trackAltitudeValue.Value;
+            pfd.Altitude.MinimumValue = trackAltitudeMin.Value;
+            pfd.Altitude.MaximumValue = trackAltitudeMax.Value;
 
-            pfdControl1.CompassGauge.Value = trackCompassValue.Value;
+            pfd.AirSpeed.Value = trackAirSpeedValue.Value;
+            pfd.AirSpeed.MinimumValue = trackAirSpeedMin.Value;
+            pfd.AirSpeed.MaximumValue = trackAirSpeedMax.Value;
 
-            pfdControl1.Horizon.RollAngle = trackHorizonRoll.Value;
-            pfdControl1.Horizon.PitchAngle = trackHorizonPitch.Value;
+            pfd.Compass.Value = trackCompassValue.Value;
+
+            pfd.AttitudeIndicator.RollAngle = trackHorizonRoll.Value;
+            pfd.AttitudeIndicator.PitchAngle = trackHorizonPitch.Value;
 
             pfdControl1.Redraw();
         }

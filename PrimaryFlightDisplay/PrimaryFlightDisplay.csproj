@@ -43,14 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gauges\ArtificialHorizon.cs" />
+    <Compile Include="Gauges\AttitudeIndicator.cs" />
     <Compile Include="Gauges\Compass.cs" />
-    <Compile Include="Gauges\VerticalBar.cs" />
+    <Compile Include="Gauges\VerticalTape.cs" />
     <Compile Include="Gauge.cs" />
-    <Compile Include="GraphicGauge.cs" />
+    <Compile Include="IAttitudeIndicator.cs" />
     <Compile Include="IGauge.cs" />
     <Compile Include="IGraphicControl.cs" />
-    <Compile Include="IGraphicGauge.cs" />
+    <Compile Include="IPrimaryFlightDisplay.cs" />
     <Compile Include="PFDControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

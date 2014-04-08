@@ -7,11 +7,18 @@ using System.Drawing.Drawing2D;
 
 namespace PrimaryFlightDisplay.Gauges
 {
-    public class ArtificialHorizon : IGraphicControl, IDisposable
+    internal class AttitudeIndicator :
+        IAttitudeIndicator, 
+        IGraphicControl, 
+        IDisposable
     {
         /// <summary>
         /// Roll Angle.</summary>
         protected float rollAngle;
+
+        /// <summary>
+        /// Pitch Angle.</summary>
+        protected float pitchAngle;
 
         /// <summary>
         /// Gets or Sets Roll Angle.</summary>
@@ -20,10 +27,6 @@ namespace PrimaryFlightDisplay.Gauges
             get { return rollAngle; }
             set { rollAngle = value; }
         }
-
-        /// <summary>
-        /// Pitch Angle.</summary>
-        protected float pitchAngle;
 
         /// <summary>
         /// Gets or Sets Pitch Angle.</summary>
@@ -48,13 +51,24 @@ namespace PrimaryFlightDisplay.Gauges
         /// <remarks>The Envelope is prepared every SetSize call.</remarks>
         protected Rectangle envelope;
 
+        public AttitudeIndicator()
+        {
+        }
+
         /// <summary>
         /// Sets Drawing Envelope.</summary>
         /// <param name="envelope">Drawing Envelope.</param>
         public virtual void SetEnvelope(Rectangle envelope)
         {
             this.envelope = envelope;
-            PrepareDrawingElements();
+            NewEnvelope();
+        }
+
+        /// <summary>
+        /// New Drawing Envelope received.</summary>
+        protected virtual void NewEnvelope()
+        {
+            horizonCenter = new CenterIndicator(new Point(envelope.Width / 2, envelope.Height / 2));
         }
 
         /// <summary>
@@ -69,6 +83,9 @@ namespace PrimaryFlightDisplay.Gauges
                 GraphicsPath skyPath = new GraphicsPath();
                 skyPath.AddRectangle(new Rectangle(-envelope.Width, -envelope.Height, envelope.Width * 3, center.Y * 3 + 1));
 
+                GraphicsPath skylinePath = new GraphicsPath();
+                skylinePath.AddLine(-envelope.Width, center.Y, envelope.Width*3, center.Y);
+
                 GraphicsPath groundPath = new GraphicsPath();
                 groundPath.AddRectangle(new Rectangle(-envelope.Width, center.Y, envelope.Width * 3, envelope.Height * 3));
 
@@ -80,26 +97,21 @@ namespace PrimaryFlightDisplay.Gauges
                 transformMatrix.Translate(0, pitchAngle);
 
                 skyPath.Transform(transformMatrix);
+                skylinePath.Transform(transformMatrix);
                 groundPath.Transform(transformMatrix);
 
                 g.FillPath(skyBrush, skyPath);
                 g.FillPath(groundBrush, groundPath);
+                g.DrawPath(drawingPen, skylinePath);
 
                 skyPath.Dispose();
+                skylinePath.Dispose();
                 groundPath.Dispose();
 
                 horizonCenter.Draw(g);
 
                 g.ResetClip();
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual void PrepareDrawingElements()
-        {
-            horizonCenter = new CenterIndicator(new Point(envelope.Width / 2, envelope.Height / 2));
         }
 
         /// <summary>

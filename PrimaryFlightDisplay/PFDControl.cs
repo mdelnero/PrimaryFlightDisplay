@@ -6,24 +6,57 @@ using PrimaryFlightDisplay.Gauges;
 
 namespace PrimaryFlightDisplay
 {
-    public partial class PFDControl : UserControl
+    public partial class PFDControl :
+        UserControl,
+        IPrimaryFlightDisplay
     {
         /// <summary>
-        /// AirSpeed Gauge.</summary>
-        public VerticalBar AirspeedGauge = new VerticalBar();
+        /// Air Speed.</summary>
+        private VerticalTape airspeedGauge = new VerticalTape();
 
         /// <summary>
         /// Altitude Gauge.</summary>
-        public VerticalBar AltitudeGauge = new VerticalBar();
+        private VerticalTape altitudeGauge = new VerticalTape();
 
         /// <summary>
         /// Compass.</summary>
-        public Compass CompassGauge = new Compass();
+        private Compass compassGauge = new Compass();
 
         /// <summary>
         /// Artificial Horizon.</summary>
-        public ArtificialHorizon Horizon = new ArtificialHorizon();
+        private AttitudeIndicator attitudeIndicator = new AttitudeIndicator();
 
+        /// <summary>
+        /// Air Speed Tape.</summary>
+        public IGauge AirSpeed 
+        { 
+            get {return airspeedGauge;}
+        }
+
+        /// <summary>
+        /// Altitude Tape.</summary>
+        public IGauge Altitude
+        {
+            get { return altitudeGauge; }
+        }
+
+        /// <summary>
+        /// Compass.</summary>
+        public IGauge Compass
+        {
+            get { return compassGauge; }
+        }
+
+        /// <summary>
+        /// Attitude Indicator.</summary>
+        public IAttitudeIndicator AttitudeIndicator
+        {
+            get { return attitudeIndicator; }
+        }
+
+        /// <summary>
+        /// Class Constructor.
+        /// </summary>
         public PFDControl()
         {
             InitializeComponent();
@@ -37,16 +70,16 @@ namespace PrimaryFlightDisplay
         /// Initialize Gauges.</summary>
         protected void InitializeGauges()
         {
-            AltitudeGauge.DockPosition = VerticalBar.GaugeDockPosition.DockRight;
-            AltitudeGauge.MinimumValue = 0;
-            AltitudeGauge.MaximumValue = 200;
-            AltitudeGauge.MajorGraduation = 20;
-            AltitudeGauge.NeverExceedValue = 100;
+            altitudeGauge.DockPosition = VerticalTape.GaugeDockPosition.DockRight;
+            altitudeGauge.MinimumValue = 0;
+            altitudeGauge.MaximumValue = 200;
+            altitudeGauge.MajorGraduation = 20;
+            altitudeGauge.NeverExceedValue = 100;
 
-            AirspeedGauge.DockPosition = VerticalBar.GaugeDockPosition.DockLeft;
-            AirspeedGauge.MinimumValue = 0;
-            AirspeedGauge.MaximumValue = 20;
-            AirspeedGauge.MajorGraduation = 5;            
+            airspeedGauge.DockPosition = VerticalTape.GaugeDockPosition.DockLeft;
+            airspeedGauge.MinimumValue = 0;
+            airspeedGauge.MaximumValue = 20;
+            airspeedGauge.MajorGraduation = 5;            
         }
 
         /// <summary>
@@ -63,7 +96,7 @@ namespace PrimaryFlightDisplay
 
         private void GraphicUserControl_Resize(object sender, EventArgs e)
         {
-            Horizon.SetEnvelope(this.DisplayRectangle);
+            attitudeIndicator.SetEnvelope(this.DisplayRectangle);
 
             Rectangle altitudeRect = new Rectangle();
 
@@ -72,7 +105,7 @@ namespace PrimaryFlightDisplay
             altitudeRect.Y = (this.Height - altitudeRect.Height) / 2;
             altitudeRect.X = (this.Width - altitudeRect.Width);
 
-            AltitudeGauge.SetEnvelope(altitudeRect);
+            altitudeGauge.SetEnvelope(altitudeRect);
 
             Rectangle airspeedRect = new Rectangle();
 
@@ -81,7 +114,7 @@ namespace PrimaryFlightDisplay
             airspeedRect.Y = (this.Height - airspeedRect.Height) / 2;
             airspeedRect.X = 0;
             
-            AirspeedGauge.SetEnvelope(airspeedRect);
+            airspeedGauge.SetEnvelope(airspeedRect);
 
             Rectangle compassRect = new Rectangle();
 
@@ -90,7 +123,7 @@ namespace PrimaryFlightDisplay
             compassRect.Y = (this.Bottom - compassRect.Height);
             compassRect.X = (this.Right - compassRect.Width) / 2; ;
 
-            CompassGauge.SetEnvelope(compassRect);
+            compassGauge.SetEnvelope(compassRect);
 
             Redraw();
         }
@@ -99,10 +132,10 @@ namespace PrimaryFlightDisplay
         {
             Graphics g = e.Graphics;
 
-            Horizon.Draw(g);
-            AirspeedGauge.Draw(g);
-            AltitudeGauge.Draw(g);
-            CompassGauge.Draw(g);
+            attitudeIndicator.Draw(g);
+            airspeedGauge.Draw(g);
+            altitudeGauge.Draw(g);
+            compassGauge.Draw(g);
         }
 
         private void GraphicUserControl_MouseDown(object sender, MouseEventArgs e)
