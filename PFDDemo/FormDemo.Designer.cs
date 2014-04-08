@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBoxHorizon = new System.Windows.Forms.GroupBox();
+            this.trackHorizonRoll = new System.Windows.Forms.TrackBar();
+            this.trackHorizonPitch = new System.Windows.Forms.TrackBar();
             this.groupBoxCompass = new System.Windows.Forms.GroupBox();
             this.trackCompassValue = new System.Windows.Forms.TrackBar();
             this.groupBoxAirSpeed = new System.Windows.Forms.GroupBox();
@@ -52,6 +55,9 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBoxHorizon.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHorizonRoll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHorizonPitch)).BeginInit();
             this.groupBoxCompass.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackCompassValue)).BeginInit();
             this.groupBoxAirSpeed.SuspendLayout();
@@ -73,6 +79,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBoxHorizon);
             this.splitContainer1.Panel1.Controls.Add(this.groupBoxCompass);
             this.splitContainer1.Panel1.Controls.Add(this.groupBoxAirSpeed);
             this.splitContainer1.Panel1.Controls.Add(this.groupBoxAltitude);
@@ -85,12 +92,45 @@
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
+            // groupBoxHorizon
+            // 
+            this.groupBoxHorizon.Controls.Add(this.trackHorizonRoll);
+            this.groupBoxHorizon.Controls.Add(this.trackHorizonPitch);
+            this.groupBoxHorizon.Location = new System.Drawing.Point(12, 421);
+            this.groupBoxHorizon.Name = "groupBoxHorizon";
+            this.groupBoxHorizon.Size = new System.Drawing.Size(243, 120);
+            this.groupBoxHorizon.TabIndex = 10;
+            this.groupBoxHorizon.TabStop = false;
+            this.groupBoxHorizon.Text = "Artificial Horizon";
+            // 
+            // trackHorizonRoll
+            // 
+            this.trackHorizonRoll.Location = new System.Drawing.Point(6, 69);
+            this.trackHorizonRoll.Maximum = 180;
+            this.trackHorizonRoll.Minimum = -180;
+            this.trackHorizonRoll.Name = "trackHorizonRoll";
+            this.trackHorizonRoll.Size = new System.Drawing.Size(228, 45);
+            this.trackHorizonRoll.TabIndex = 8;
+            this.trackHorizonRoll.TickFrequency = 36;
+            this.trackHorizonRoll.Scroll += new System.EventHandler(this.trackHorizonRoll_Scroll);
+            // 
+            // trackHorizonPitch
+            // 
+            this.trackHorizonPitch.Location = new System.Drawing.Point(7, 28);
+            this.trackHorizonPitch.Maximum = 180;
+            this.trackHorizonPitch.Minimum = -180;
+            this.trackHorizonPitch.Name = "trackHorizonPitch";
+            this.trackHorizonPitch.Size = new System.Drawing.Size(228, 45);
+            this.trackHorizonPitch.TabIndex = 7;
+            this.trackHorizonPitch.TickFrequency = 36;
+            this.trackHorizonPitch.Scroll += new System.EventHandler(this.trackHorizonPitch_Scroll);
+            // 
             // groupBoxCompass
             // 
             this.groupBoxCompass.Controls.Add(this.trackCompassValue);
             this.groupBoxCompass.Location = new System.Drawing.Point(12, 335);
             this.groupBoxCompass.Name = "groupBoxCompass";
-            this.groupBoxCompass.Size = new System.Drawing.Size(243, 100);
+            this.groupBoxCompass.Size = new System.Drawing.Size(243, 80);
             this.groupBoxCompass.TabIndex = 9;
             this.groupBoxCompass.TabStop = false;
             this.groupBoxCompass.Text = "Compass";
@@ -100,9 +140,9 @@
             this.trackCompassValue.Location = new System.Drawing.Point(7, 29);
             this.trackCompassValue.Maximum = 360;
             this.trackCompassValue.Name = "trackCompassValue";
-            this.trackCompassValue.Size = new System.Drawing.Size(228, 42);
+            this.trackCompassValue.Size = new System.Drawing.Size(228, 45);
             this.trackCompassValue.TabIndex = 6;
-            this.trackCompassValue.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackCompassValue.TickFrequency = 36;
             this.trackCompassValue.Scroll += new System.EventHandler(this.trackCompassValue_Scroll);
             // 
             // groupBoxAirSpeed
@@ -154,9 +194,9 @@
             this.trackAirSpeedValue.Location = new System.Drawing.Point(9, 99);
             this.trackAirSpeedValue.Maximum = 100;
             this.trackAirSpeedValue.Name = "trackAirSpeedValue";
-            this.trackAirSpeedValue.Size = new System.Drawing.Size(228, 42);
+            this.trackAirSpeedValue.Size = new System.Drawing.Size(228, 45);
             this.trackAirSpeedValue.TabIndex = 5;
-            this.trackAirSpeedValue.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackAirSpeedValue.TickFrequency = 5;
             this.trackAirSpeedValue.Scroll += new System.EventHandler(this.trackAirSpeedValue_Scroll);
             // 
             // trackAirSpeedMax
@@ -165,10 +205,10 @@
             this.trackAirSpeedMax.Location = new System.Drawing.Point(75, 67);
             this.trackAirSpeedMax.Maximum = 100;
             this.trackAirSpeedMax.Name = "trackAirSpeedMax";
-            this.trackAirSpeedMax.Size = new System.Drawing.Size(162, 42);
+            this.trackAirSpeedMax.Size = new System.Drawing.Size(162, 45);
             this.trackAirSpeedMax.SmallChange = 10;
             this.trackAirSpeedMax.TabIndex = 4;
-            this.trackAirSpeedMax.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackAirSpeedMax.TickFrequency = 10;
             this.trackAirSpeedMax.Value = 100;
             this.trackAirSpeedMax.Scroll += new System.EventHandler(this.trackAirSpeedMax_Scroll);
             // 
@@ -187,10 +227,10 @@
             this.trackAirSpeedMin.Location = new System.Drawing.Point(75, 30);
             this.trackAirSpeedMin.Maximum = 100;
             this.trackAirSpeedMin.Name = "trackAirSpeedMin";
-            this.trackAirSpeedMin.Size = new System.Drawing.Size(162, 42);
+            this.trackAirSpeedMin.Size = new System.Drawing.Size(162, 45);
             this.trackAirSpeedMin.SmallChange = 10;
             this.trackAirSpeedMin.TabIndex = 2;
-            this.trackAirSpeedMin.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackAirSpeedMin.TickFrequency = 10;
             this.trackAirSpeedMin.Scroll += new System.EventHandler(this.trackAirSpeedMin_Scroll);
             // 
             // groupBoxAltitude
@@ -243,9 +283,9 @@
             this.trackAltitudeValue.Location = new System.Drawing.Point(9, 99);
             this.trackAltitudeValue.Maximum = 1000;
             this.trackAltitudeValue.Name = "trackAltitudeValue";
-            this.trackAltitudeValue.Size = new System.Drawing.Size(228, 42);
+            this.trackAltitudeValue.Size = new System.Drawing.Size(228, 45);
             this.trackAltitudeValue.TabIndex = 5;
-            this.trackAltitudeValue.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackAltitudeValue.TickFrequency = 50;
             this.trackAltitudeValue.Scroll += new System.EventHandler(this.trackAltitudeValue_Scroll);
             // 
             // trackAltitudeMax
@@ -254,7 +294,7 @@
             this.trackAltitudeMax.Location = new System.Drawing.Point(75, 67);
             this.trackAltitudeMax.Maximum = 1000;
             this.trackAltitudeMax.Name = "trackAltitudeMax";
-            this.trackAltitudeMax.Size = new System.Drawing.Size(162, 42);
+            this.trackAltitudeMax.Size = new System.Drawing.Size(162, 45);
             this.trackAltitudeMax.SmallChange = 10;
             this.trackAltitudeMax.TabIndex = 4;
             this.trackAltitudeMax.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -276,10 +316,10 @@
             this.trackAltitudeMin.Location = new System.Drawing.Point(75, 30);
             this.trackAltitudeMin.Maximum = 1000;
             this.trackAltitudeMin.Name = "trackAltitudeMin";
-            this.trackAltitudeMin.Size = new System.Drawing.Size(162, 42);
+            this.trackAltitudeMin.Size = new System.Drawing.Size(162, 45);
             this.trackAltitudeMin.SmallChange = 10;
             this.trackAltitudeMin.TabIndex = 2;
-            this.trackAltitudeMin.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackAltitudeMin.TickFrequency = 100;
             this.trackAltitudeMin.Scroll += new System.EventHandler(this.trackAltitudeMin_Scroll);
             // 
             // pfdControl1
@@ -303,6 +343,10 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBoxHorizon.ResumeLayout(false);
+            this.groupBoxHorizon.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHorizonRoll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHorizonPitch)).EndInit();
             this.groupBoxCompass.ResumeLayout(false);
             this.groupBoxCompass.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackCompassValue)).EndInit();
@@ -342,5 +386,8 @@
         private System.Windows.Forms.TrackBar trackAirSpeedMin;
         private System.Windows.Forms.GroupBox groupBoxCompass;
         private System.Windows.Forms.TrackBar trackCompassValue;
+        private System.Windows.Forms.GroupBox groupBoxHorizon;
+        private System.Windows.Forms.TrackBar trackHorizonPitch;
+        private System.Windows.Forms.TrackBar trackHorizonRoll;
     }
 }

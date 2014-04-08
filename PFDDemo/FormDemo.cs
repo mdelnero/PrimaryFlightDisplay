@@ -30,6 +30,9 @@ namespace PFDDemo
 
             pfdControl1.CompassGauge.Value = trackCompassValue.Value;
 
+            pfdControl1.Horizon.RollAngle = trackHorizonRoll.Value;
+            pfdControl1.Horizon.PitchAngle = trackHorizonPitch.Value;
+
             pfdControl1.Redraw();
         }
 
@@ -113,6 +116,16 @@ namespace PFDDemo
         }
 
         private void trackCompassValue_Scroll(object sender, EventArgs e)
+        {
+            UpdateAltitudeGaugeParams();
+        }
+
+        private void trackHorizonPitch_Scroll(object sender, EventArgs e)
+        {
+            UpdateAltitudeGaugeParams();
+        }
+
+        private void trackHorizonRoll_Scroll(object sender, EventArgs e)
         {
             UpdateAltitudeGaugeParams();
         }
