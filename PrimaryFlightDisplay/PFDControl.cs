@@ -28,9 +28,9 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Air Speed Tape.</summary>
-        public IGauge AirSpeed 
-        { 
-            get {return airspeedGauge;}
+        public IGauge AirSpeed
+        {
+            get { return airspeedGauge; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace PrimaryFlightDisplay
             airspeedGauge.DockPosition = VerticalTape.GaugeDockPosition.DockLeft;
             airspeedGauge.MinimumValue = 0;
             airspeedGauge.MaximumValue = 20;
-            airspeedGauge.MajorGraduation = 5;            
+            airspeedGauge.MajorGraduation = 5;
         }
 
         /// <summary>
@@ -100,28 +100,28 @@ namespace PrimaryFlightDisplay
 
             Rectangle altitudeRect = new Rectangle();
 
-            altitudeRect.Width = (int)(this.Width * 0.15f);
-            altitudeRect.Height = (int)(this.Height * 0.5f);
+            altitudeRect.Height = 300;
+            altitudeRect.Width = 60;
             altitudeRect.Y = (this.Height - altitudeRect.Height) / 2;
-            altitudeRect.X = (this.Width - altitudeRect.Width);
+            altitudeRect.X = (this.Width - altitudeRect.Width - 20);
 
             altitudeGauge.SetEnvelope(altitudeRect);
 
             Rectangle airspeedRect = new Rectangle();
 
-            airspeedRect.Width = (int)(this.Width * 0.15f);
-            airspeedRect.Height = (int)(this.Height * 0.5f);
+            airspeedRect.Height = 300;
+            airspeedRect.Width = 60;
             airspeedRect.Y = (this.Height - airspeedRect.Height) / 2;
-            airspeedRect.X = 0;
-            
+            airspeedRect.X = 20;
+
             airspeedGauge.SetEnvelope(airspeedRect);
 
             Rectangle compassRect = new Rectangle();
 
-            compassRect.Width = 350;
-            compassRect.Height = 50;
-            compassRect.Y = (this.Bottom - compassRect.Height);
-            compassRect.X = (this.Right - compassRect.Width) / 2; ;
+            compassRect.Width = 250;
+            compassRect.Height = 40;
+            compassRect.Y = (this.Bottom - compassRect.Height - 20);
+            compassRect.X = (this.Right - compassRect.Width) / 2;
 
             compassGauge.SetEnvelope(compassRect);
 

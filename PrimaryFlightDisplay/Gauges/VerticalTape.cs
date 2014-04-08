@@ -64,8 +64,8 @@ namespace PrimaryFlightDisplay.Gauges
                 currentIndicator = new Point[] { 
                         new Point(envelope.Left + 10, yCenter) ,
                         new Point(envelope.Left + 20, yCenter - 10) ,
-                        new Point(envelope.Right, yCenter - 10) ,
-                        new Point(envelope.Right, yCenter + 10) ,
+                        new Point(envelope.Right+5, yCenter - 10) ,
+                        new Point(envelope.Right+5, yCenter + 10) ,
                         new Point(envelope.Left + 20, yCenter + 10)
                     };
             }
@@ -74,8 +74,8 @@ namespace PrimaryFlightDisplay.Gauges
                 currentIndicator = new Point[] { 
                         new Point(envelope.Right - 10, yCenter) ,
                         new Point(envelope.Right - 20, yCenter - 10) ,
-                        new Point(envelope.Left, yCenter - 10) ,
-                        new Point(envelope.Left, yCenter + 10) ,
+                        new Point(envelope.Left-5, yCenter - 10) ,
+                        new Point(envelope.Left-5, yCenter + 10) ,
                         new Point(envelope.Right - 20, yCenter + 10)
                     };
             }

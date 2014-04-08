@@ -87,7 +87,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pfdControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(770, 591);
+            this.splitContainer1.Size = new System.Drawing.Size(792, 549);
             this.splitContainer1.SplitterDistance = 267;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
@@ -327,14 +327,14 @@
             this.pfdControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pfdControl1.Location = new System.Drawing.Point(0, 0);
             this.pfdControl1.Name = "pfdControl1";
-            this.pfdControl1.Size = new System.Drawing.Size(498, 591);
+            this.pfdControl1.Size = new System.Drawing.Size(520, 549);
             this.pfdControl1.TabIndex = 0;
             // 
             // FormDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(770, 591);
+            this.ClientSize = new System.Drawing.Size(792, 549);
             this.Controls.Add(this.splitContainer1);
             this.Name = "FormDemo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -8,10 +8,12 @@ using System.Drawing.Drawing2D;
 namespace PrimaryFlightDisplay.Gauges
 {
     internal class AttitudeIndicator :
-        IAttitudeIndicator, 
-        IGraphicControl, 
+        IAttitudeIndicator,
+        IGraphicControl,
         IDisposable
     {
+        protected Pen drawingPen = new Pen(Brushes.White, 2);
+
         /// <summary>
         /// Roll Angle.</summary>
         protected float rollAngle;
@@ -36,21 +38,21 @@ namespace PrimaryFlightDisplay.Gauges
             set { pitchAngle = value; }
         }
 
-        protected Pen drawingPen = new Pen(Brushes.White, 2);
-
-        protected Brush skyBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
-
-        protected Brush groundBrush = new SolidBrush(Color.FromArgb(153, 102, 51));
-
         /// <summary>
         /// Horizon Center Indicator.</summary>
-        CenterIndicator horizonCenter;
+        CenterIndicator centerIndicator;
+
+        /// <summary>
+        /// Artificial Horizon.</summary>
+        ArtificialHorizon horizon = new ArtificialHorizon();
 
         /// <summary>
         /// Drawing Envelope.</summary>
         /// <remarks>The Envelope is prepared every SetSize call.</remarks>
         protected Rectangle envelope;
 
+        /// <summary>
+        /// Constructor.</summary>
         public AttitudeIndicator()
         {
         }
@@ -68,7 +70,9 @@ namespace PrimaryFlightDisplay.Gauges
         /// New Drawing Envelope received.</summary>
         protected virtual void NewEnvelope()
         {
-            horizonCenter = new CenterIndicator(new Point(envelope.Width / 2, envelope.Height / 2));
+            centerIndicator = new CenterIndicator(new Point(envelope.Width / 2, envelope.Height / 2));
+
+            horizon.SetEnvelope(envelope);
         }
 
         /// <summary>
@@ -78,39 +82,28 @@ namespace PrimaryFlightDisplay.Gauges
         {
             if (envelope != Rectangle.Empty)
             {
-                Point center = new Point(envelope.Width / 2, envelope.Height / 2);
+                horizon.Draw(g, rollAngle, pitchAngle);
 
-                GraphicsPath skyPath = new GraphicsPath();
-                skyPath.AddRectangle(new Rectangle(-envelope.Width, -envelope.Height, envelope.Width * 3, center.Y * 3 + 1));
+                centerIndicator.Draw(g);
 
-                GraphicsPath skylinePath = new GraphicsPath();
-                skylinePath.AddLine(-envelope.Width, center.Y, envelope.Width*3, center.Y);
+                // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
+                //p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
+                //p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
 
-                GraphicsPath groundPath = new GraphicsPath();
-                groundPath.AddRectangle(new Rectangle(-envelope.Width, center.Y, envelope.Width * 3, envelope.Height * 3));
+                //Point center = new Point(envelope.Width / 2, envelope.Height / 2);
 
-                g.SetClip(envelope);
+                //for (int degree = 5; degree <= 30; degree += 5)
+                //{
+                //    int width = degree % 10 != 0 ? 30 : 60;
 
-                Matrix transformMatrix = new Matrix();
+                //    g.DrawLine(drawingPen, center.X - width, center.Y - degree * 10, center.X + width, center.Y - degree * 10);
 
-                transformMatrix.RotateAt(rollAngle, center);
-                transformMatrix.Translate(0, pitchAngle);
-
-                skyPath.Transform(transformMatrix);
-                skylinePath.Transform(transformMatrix);
-                groundPath.Transform(transformMatrix);
-
-                g.FillPath(skyBrush, skyPath);
-                g.FillPath(groundBrush, groundPath);
-                g.DrawPath(drawingPen, skylinePath);
-
-                skyPath.Dispose();
-                skylinePath.Dispose();
-                groundPath.Dispose();
-
-                horizonCenter.Draw(g);
-
-                g.ResetClip();
+                //    if (width == 60)
+                //    { 
+                //        g.DrawString(degree.ToString(), SystemFonts.DefaultFont, Brushes.White, center.X - width - 20, center.Y - 5 - degree * 10);
+                //        g.DrawString(degree.ToString(), SystemFonts.DefaultFont, Brushes.White, center.X + width +10, center.Y - 5 - degree * 10);
+                //    }
+                //}
             }
         }
 
@@ -123,17 +116,71 @@ namespace PrimaryFlightDisplay.Gauges
                 drawingPen.Dispose();
                 drawingPen = null;
             }
+        }
 
-            if (skyBrush != null)
+        /// <summary>
+        /// Artificial Horizon.</summary>
+        private class ArtificialHorizon
+        {
+            /// <summary>
+            /// Center Point.</summary>
+            Point center;
+
+            /// <summary>
+            /// Drawing Envelope.</summary>
+            Rectangle envelope;
+
+            protected Pen drawingPen = new Pen(Brushes.White, 2);
+
+            protected Brush skyBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
+
+            protected Brush groundBrush = new SolidBrush(Color.FromArgb(153, 102, 51));
+
+            /// <summary>
+            /// Sets Drawing Envelope.</summary>
+            /// <param name="envelope">Drawing Envelope.</param>
+            public void SetEnvelope(Rectangle envelope)
             {
-                skyBrush.Dispose();
-                skyBrush = null;
+                this.envelope = envelope;
+                this.center = new Point(envelope.Width / 2, envelope.Height / 2);
             }
 
-            if (groundBrush != null)
+            /// <summary>
+            /// Draw Function.</summary>
+            /// <param name="g">Graphics for Drawing</param>
+            public void Draw(Graphics g, float rollAngle, float pitchAngle)
             {
-                groundBrush.Dispose();
-                groundBrush = null;
+                if (envelope != Rectangle.Empty)
+                {
+                    GraphicsPath skyPath = new GraphicsPath();
+                    skyPath.AddRectangle(new Rectangle(-envelope.Width, -envelope.Height, envelope.Width * 3, center.Y * 3 + 1));
+
+                    GraphicsPath skylinePath = new GraphicsPath();
+                    skylinePath.AddLine(-envelope.Width, center.Y, envelope.Width * 3, center.Y);
+
+                    GraphicsPath groundPath = new GraphicsPath();
+                    groundPath.AddRectangle(new Rectangle(-envelope.Width, center.Y, envelope.Width * 3, envelope.Height * 3));
+
+                    Matrix transformMatrix = new Matrix();
+                    transformMatrix.RotateAt(rollAngle, center);
+                    transformMatrix.Translate(0, pitchAngle);
+
+                    skyPath.Transform(transformMatrix);
+                    skylinePath.Transform(transformMatrix);
+                    groundPath.Transform(transformMatrix);
+
+                    g.SetClip(envelope);
+
+                    g.FillPath(skyBrush, skyPath);
+                    g.FillPath(groundBrush, groundPath);
+                    g.DrawPath(drawingPen, skylinePath);
+
+                    g.ResetClip();
+
+                    skyPath.Dispose();
+                    skylinePath.Dispose();
+                    groundPath.Dispose();
+                }
             }
         }
 
@@ -141,12 +188,20 @@ namespace PrimaryFlightDisplay.Gauges
         /// Horizon Center Indicator.</summary>
         private class CenterIndicator
         {
+            /// <summary>
+            /// Center Rectangle.</summary>
             private Rectangle centerIndicator;
 
+            /// <summary>
+            /// Left Wing.</summary>
             private Point[] leftIndicator;
 
+            /// <summary>
+            /// Right Wing.</summary>
             private Point[] rightIndicator;
 
+            /// <summary>
+            /// Constructor.</summary>
             public CenterIndicator(Point center)
             {
                 int width = 4;
@@ -172,6 +227,9 @@ namespace PrimaryFlightDisplay.Gauges
                 };
             }
 
+            /// <summary>
+            /// Draw Function.</summary>
+            /// <param name="g">Graphics for Drawing</param>
             public void Draw(Graphics g)
             {
                 g.FillRectangle(Brushes.Yellow, centerIndicator);
