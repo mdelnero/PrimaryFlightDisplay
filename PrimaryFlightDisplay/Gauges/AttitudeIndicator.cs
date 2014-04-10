@@ -44,7 +44,9 @@ namespace PrimaryFlightDisplay.Gauges
 
         /// <summary>
         /// Artificial Horizon.</summary>
-        ArtificialHorizon horizon = new ArtificialHorizon();
+        ArtificialHorizon horizon = new ArtificialHorizon(80);
+
+        PitchGrid pitchGrid = new PitchGrid(80);
 
         /// <summary>
         /// Drawing Envelope.</summary>
@@ -73,6 +75,7 @@ namespace PrimaryFlightDisplay.Gauges
             centerIndicator = new CenterIndicator(new Point(envelope.Width / 2, envelope.Height / 2));
 
             horizon.SetEnvelope(envelope);
+            pitchGrid.SetEnvelope(envelope);
         }
 
         /// <summary>
@@ -84,26 +87,9 @@ namespace PrimaryFlightDisplay.Gauges
             {
                 horizon.Draw(g, rollAngle, pitchAngle);
 
+                pitchGrid.Draw(g, rollAngle, pitchAngle);
+
                 centerIndicator.Draw(g);
-
-                // If you rotate point (px, py) around point (ox, oy) by angle theta you'll get:
-                //p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
-                //p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
-
-                //Point center = new Point(envelope.Width / 2, envelope.Height / 2);
-
-                //for (int degree = 5; degree <= 30; degree += 5)
-                //{
-                //    int width = degree % 10 != 0 ? 30 : 60;
-
-                //    g.DrawLine(drawingPen, center.X - width, center.Y - degree * 10, center.X + width, center.Y - degree * 10);
-
-                //    if (width == 60)
-                //    { 
-                //        g.DrawString(degree.ToString(), SystemFonts.DefaultFont, Brushes.White, center.X - width - 20, center.Y - 5 - degree * 10);
-                //        g.DrawString(degree.ToString(), SystemFonts.DefaultFont, Brushes.White, center.X + width +10, center.Y - 5 - degree * 10);
-                //    }
-                //}
             }
         }
 
@@ -115,6 +101,71 @@ namespace PrimaryFlightDisplay.Gauges
             {
                 drawingPen.Dispose();
                 drawingPen = null;
+            }
+        }
+
+        private class PitchGrid
+        {
+            protected Pen drawingPen = new Pen(Brushes.White, 2);
+
+            /// <summary>
+            /// Center Point.</summary>
+            Point center;
+
+            /// <summary>
+            /// Drawing Envelope.</summary>
+            Rectangle envelope;
+
+            /// <summary>
+            /// Field Of View.</summary>
+            int FOV;
+
+            /// <summary>
+            /// Pixel Per Degree.</summary>
+            int pixelPerDegree;
+
+            /// <summary>
+            /// Class Constructor.
+            /// </summary>
+            /// <param name="FOV">Field Of View.</param>
+            public PitchGrid(int FOV)
+            {
+                this.FOV = FOV;
+            }
+
+            /// <summary>
+            /// Sets Drawing Envelope.</summary>
+            /// <param name="envelope">Drawing Envelope.</param>
+            public void SetEnvelope(Rectangle envelope)
+            {
+                this.envelope = envelope;
+                this.center = new Point(envelope.Width / 2, envelope.Height / 2);
+                this.pixelPerDegree = envelope.Height / FOV;
+            }
+
+            /// <summary>
+            /// Draw Function.</summary>
+            /// <param name="g">Graphics for Drawing</param>
+            public void Draw(Graphics g, float rollAngle, float pitchAngle)
+            {
+                Matrix transformMatrix = new Matrix();
+                transformMatrix.RotateAt(rollAngle, center);
+                transformMatrix.Translate(0, pitchAngle * pixelPerDegree);
+
+                for (int degree = -180; degree <= 180; degree += 5)
+                {
+                    if (degree == 0)
+                        continue;
+
+                    int width = degree % 10 == 0? 60: 30;
+
+                    GraphicsPath skyPath = new GraphicsPath();
+                    skyPath.AddLine(center.X - width, center.Y - degree * pixelPerDegree, center.X + width, center.Y - degree * pixelPerDegree);
+                    skyPath.Transform(transformMatrix);
+                    g.DrawPath(drawingPen, skyPath);
+
+                    //g.DrawString(degree.ToString(), SystemFonts.DefaultFont, Brushes.White, center.X - width - 15, center.Y - degree * 10);
+                }
             }
         }
 
@@ -130,11 +181,28 @@ namespace PrimaryFlightDisplay.Gauges
             /// Drawing Envelope.</summary>
             Rectangle envelope;
 
+            /// <summary>
+            /// Field Of View.</summary>
+            int FOV;
+
+            /// <summary>
+            /// Pixel Per Degree.</summary>
+            int pixelPerDegree;
+
             protected Pen drawingPen = new Pen(Brushes.White, 2);
 
             protected Brush skyBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
 
             protected Brush groundBrush = new SolidBrush(Color.FromArgb(153, 102, 51));
+
+            /// <summary>
+            /// Class Constructor.
+            /// </summary>
+            /// <param name="FOV">Field Of View.</param>
+            public ArtificialHorizon(int FOV)
+            {
+                this.FOV = FOV;
+            }
 
             /// <summary>
             /// Sets Drawing Envelope.</summary>
@@ -143,6 +211,7 @@ namespace PrimaryFlightDisplay.Gauges
             {
                 this.envelope = envelope;
                 this.center = new Point(envelope.Width / 2, envelope.Height / 2);
+                this.pixelPerDegree = envelope.Height / FOV;
             }
 
             /// <summary>
@@ -163,7 +232,7 @@ namespace PrimaryFlightDisplay.Gauges
 
                     Matrix transformMatrix = new Matrix();
                     transformMatrix.RotateAt(rollAngle, center);
-                    transformMatrix.Translate(0, pitchAngle);
+                    transformMatrix.Translate(0, pitchAngle * pixelPerDegree);
 
                     skyPath.Transform(transformMatrix);
                     skylinePath.Transform(transformMatrix);
