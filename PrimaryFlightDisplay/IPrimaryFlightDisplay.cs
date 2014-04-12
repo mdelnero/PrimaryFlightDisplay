@@ -7,12 +7,12 @@ namespace PrimaryFlightDisplay
     public interface IPrimaryFlightDisplay
     {
         /// <summary>
-        /// Air Speed Tape.</summary>
-        IGauge AirSpeed { get; }
+        /// Air Speed Indicator.</summary>
+        IIndicator AirSpeed { get; }
 
         /// <summary>
-        /// Altitude Tape.</summary>
-        IGauge Altitude { get; }
+        /// Altitude Indicator.</summary>
+        IIndicator Altitude { get; }
 
         /// <summary>
         /// Compass.</summary>

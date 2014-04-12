@@ -5,7 +5,7 @@ namespace PrimaryFlightDisplay
 {
     internal class Gauge :
         IGauge,
-        IGraphicControl,
+        IGraphicIndicator,
         IDisposable
     {
         /// <summary>
@@ -107,6 +107,14 @@ namespace PrimaryFlightDisplay
             }
         }
 
+
+        /// <summary>
+        /// Gets Drawing Envelope.</summary>
+        public Rectangle DrawingEnvelope
+        {
+            get { return envelope; }
+        }
+
         /// <summary>
         /// Drawing Envelope.</summary>
         protected Rectangle envelope;
@@ -114,6 +122,13 @@ namespace PrimaryFlightDisplay
         /// <summary>
         /// Size of Major Graduation in Pixels.</summary>
         protected int pixelPerGraduation = 40;
+        /// <summary>
+        /// Gets or Sets Major Graduation Size in Pixels.</summary>
+        public int PixelPerGraduation
+        {
+            get { return pixelPerGraduation; }
+            set { pixelPerGraduation = value; }
+        }
 
         /// <summary>
         /// Class Constructor.</summary>
@@ -124,7 +139,7 @@ namespace PrimaryFlightDisplay
         /// <summary>
         /// Sets Drawing Envelope.</summary>
         /// <param name="envelope">Drawing Envelope.</param>
-        public virtual void SetEnvelope(Rectangle envelope)
+        public virtual void SetDrawingEnvelope(Rectangle envelope)
         {
             this.envelope = envelope;
             NewEnvelope();

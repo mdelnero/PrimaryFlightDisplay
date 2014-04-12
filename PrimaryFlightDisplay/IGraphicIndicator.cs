@@ -3,14 +3,22 @@
 namespace PrimaryFlightDisplay
 {
     /// <summary>
-    /// Base Graphic Control Interface.
+    /// Graphic Indicator Interface.
     /// </summary>
-    internal interface IGraphicControl
+    public interface IGraphicIndicator
     {
+        /// <summary>
+        /// Major Graduation Size in Pixels.</summary>
+        int PixelPerGraduation { get; set; }
+
+        /// <summary>
+        /// Drawing Envelope.</summary>
+        Rectangle DrawingEnvelope { get; }
+
         /// <summary>
         /// Sets Drawing Envelope.</summary>
         /// <param name="envelope">Drawing Envelope.</param>
-        void SetEnvelope(Rectangle envelope);
+        void SetDrawingEnvelope(Rectangle envelope);
 
         /// <summary>
         /// Draw Function.</summary>

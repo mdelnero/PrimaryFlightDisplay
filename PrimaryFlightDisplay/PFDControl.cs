@@ -12,11 +12,11 @@ namespace PrimaryFlightDisplay
     {
         /// <summary>
         /// Air Speed.</summary>
-        private VerticalTape airspeedGauge = new VerticalTape();
+        private VerticalIndicator airspeed = new VerticalIndicator();
 
         /// <summary>
         /// Altitude Gauge.</summary>
-        private VerticalTape altitudeGauge = new VerticalTape();
+        private VerticalIndicator altitude = new VerticalIndicator();
 
         /// <summary>
         /// Compass.</summary>
@@ -27,17 +27,17 @@ namespace PrimaryFlightDisplay
         private AttitudeIndicator attitudeIndicator = new AttitudeIndicator();
 
         /// <summary>
-        /// Air Speed Tape.</summary>
-        public IGauge AirSpeed
+        /// Air Speed Indicator.</summary>
+        public IIndicator AirSpeed
         {
-            get { return airspeedGauge; }
+            get { return airspeed; }
         }
 
         /// <summary>
-        /// Altitude Tape.</summary>
-        public IGauge Altitude
+        /// Altitude Indicator.</summary>
+        public IIndicator Altitude
         {
-            get { return altitudeGauge; }
+            get { return altitude; }
         }
 
         /// <summary>
@@ -70,16 +70,14 @@ namespace PrimaryFlightDisplay
         /// Initialize Gauges.</summary>
         protected void InitializeGauges()
         {
-            altitudeGauge.DockPosition = VerticalTape.GaugeDockPosition.DockRight;
-            altitudeGauge.MinimumValue = 0;
-            altitudeGauge.MaximumValue = 200;
-            altitudeGauge.MajorGraduation = 20;
-            altitudeGauge.NeverExceedValue = 100;
+            altitude.Orientation = IndicatorOrientation.Right;
+            altitude.MinimumValue = 0;
+            altitude.MaximumValue = 200;
+            altitude.MajorScaleGraduation = 20;
 
-            airspeedGauge.DockPosition = VerticalTape.GaugeDockPosition.DockLeft;
-            airspeedGauge.MinimumValue = 0;
-            airspeedGauge.MaximumValue = 20;
-            airspeedGauge.MajorGraduation = 5;
+            airspeed.Orientation = IndicatorOrientation.Left;
+            airspeed.MinimumValue = 0;
+            airspeed.MaximumValue = 20;
         }
 
         /// <summary>
@@ -96,7 +94,7 @@ namespace PrimaryFlightDisplay
 
         private void GraphicUserControl_Resize(object sender, EventArgs e)
         {
-            attitudeIndicator.SetEnvelope(this.DisplayRectangle);
+            attitudeIndicator.SetDrawingEnvelope(this.DisplayRectangle);
 
             Rectangle altitudeRect = new Rectangle();
 
@@ -105,7 +103,7 @@ namespace PrimaryFlightDisplay
             altitudeRect.Y = (this.Height - altitudeRect.Height) / 2;
             altitudeRect.X = (this.Width - altitudeRect.Width - 20);
 
-            altitudeGauge.SetEnvelope(altitudeRect);
+            altitude.SetDrawingEnvelope(altitudeRect);
 
             Rectangle airspeedRect = new Rectangle();
 
@@ -114,7 +112,7 @@ namespace PrimaryFlightDisplay
             airspeedRect.Y = (this.Height - airspeedRect.Height) / 2;
             airspeedRect.X = 20;
 
-            airspeedGauge.SetEnvelope(airspeedRect);
+            airspeed.SetDrawingEnvelope(airspeedRect);
 
             Rectangle compassRect = new Rectangle();
 
@@ -123,7 +121,7 @@ namespace PrimaryFlightDisplay
             compassRect.Y = (this.Bottom - compassRect.Height - 20);
             compassRect.X = (this.Right - compassRect.Width) / 2;
 
-            compassGauge.SetEnvelope(compassRect);
+            compassGauge.SetDrawingEnvelope(compassRect);
 
             Redraw();
         }
@@ -132,9 +130,12 @@ namespace PrimaryFlightDisplay
         {
             Graphics g = e.Graphics;
 
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             attitudeIndicator.Draw(g);
-            airspeedGauge.Draw(g);
-            altitudeGauge.Draw(g);
+            airspeed.Draw(g);
+            altitude.Draw(g);
             compassGauge.Draw(g);
         }
 
