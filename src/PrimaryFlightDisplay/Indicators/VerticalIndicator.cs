@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
-namespace PrimaryFlightDisplay
+namespace PrimaryFlightDisplay.Indicators
 {
     public enum IndicatorOrientation
     {
@@ -169,24 +170,22 @@ namespace PrimaryFlightDisplay
                 g.FillRectangle(backgroundBrush, envelope);
                 g.DrawRectangle(primaryPen, envelope);
 
-                // Previous major graduation value next to currentValue.
-                long majorGraduationValue = (this.Value / MajorScaleGraduation) * MajorScaleGraduation;
+                long majorGraduationVisibleInterval = (long)Math.Truncate((double)envelope.Height / (double)PixelPerGraduation) * MajorScaleGraduation;
 
-                // First major graduation value on screen
-                long majorGraduationBottomInterval = envelope.Height / PixelPerGraduation / 2 * MajorScaleGraduation;
+                long nearestMajorGraduationValue = (long)Math.Truncate((double)this.Value / (double)MajorScaleGraduation) * MajorScaleGraduation;
 
-                // Current value pixel offset
-                long currentValuePixelOffset = (long)(((float)(this.Value % MajorScaleGraduation) / (float)MajorScaleGraduation) * PixelPerGraduation);
+                int minorGraduationPixelOffset = (int)(((double)(this.Value % MajorScaleGraduation) / (double)MajorScaleGraduation) * PixelPerGraduation);
 
-                int drawAreaLenght = (int)(majorGraduationBottomInterval * 2 * PixelPerGraduation / MajorScaleGraduation); // In Pixels
+                int drawAreaLenghtPixels = (int)(majorGraduationVisibleInterval * PixelPerGraduation / MajorScaleGraduation);
 
-                int drawAreaPadding = (envelope.Height - drawAreaLenght) / 2;
+                int drawAreaPaddingPixels = (envelope.Height - drawAreaLenghtPixels) / 2;
 
-                int pixelCoordinateBegin = envelope.Bottom - drawAreaPadding + (int)currentValuePixelOffset;
+                int pixelCoordinateBegin = envelope.Bottom - drawAreaPaddingPixels + (int)minorGraduationPixelOffset;
 
-                for (long itemValue = (majorGraduationValue - majorGraduationBottomInterval);
-                    itemValue <= (majorGraduationValue + majorGraduationBottomInterval + MajorScaleGraduation);
-                    itemValue += MajorScaleGraduation)
+                long firstMajor = (nearestMajorGraduationValue - majorGraduationVisibleInterval / 2);
+                long lastMajor = (nearestMajorGraduationValue + MajorScaleGraduation + majorGraduationVisibleInterval / 2);
+
+                for (long itemValue = firstMajor; itemValue <= lastMajor; itemValue += MajorScaleGraduation)
                 {
                     DrawMajorGraduation(g, itemValue, pixelCoordinateBegin);
                     pixelCoordinateBegin -= PixelPerGraduation;

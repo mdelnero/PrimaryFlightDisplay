@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PrimaryFlightDisplay.Indicators;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using PrimaryFlightDisplay.Gauges;
 
 namespace PrimaryFlightDisplay
 {
@@ -20,7 +19,7 @@ namespace PrimaryFlightDisplay
 
         /// <summary>
         /// Compass.</summary>
-        private Compass compassGauge = new Compass();
+        private HeadingIndicator heading = new HeadingIndicator();
 
         /// <summary>
         /// Artificial Horizon.</summary>
@@ -41,10 +40,10 @@ namespace PrimaryFlightDisplay
         }
 
         /// <summary>
-        /// Compass.</summary>
-        public IGauge Compass
+        /// Heading Indicator.</summary>
+        public IIndicator Heading
         {
-            get { return compassGauge; }
+            get { return heading; }
         }
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace PrimaryFlightDisplay
             compassRect.Y = (this.Bottom - compassRect.Height - 20);
             compassRect.X = (this.Right - compassRect.Width) / 2;
 
-            compassGauge.SetDrawingEnvelope(compassRect);
+            heading.SetDrawingEnvelope(compassRect);
 
             Redraw();
         }
@@ -136,7 +135,7 @@ namespace PrimaryFlightDisplay
             attitudeIndicator.Draw(g);
             airspeed.Draw(g);
             altitude.Draw(g);
-            compassGauge.Draw(g);
+            heading.Draw(g);
         }
 
         private void GraphicUserControl_MouseDown(object sender, MouseEventArgs e)

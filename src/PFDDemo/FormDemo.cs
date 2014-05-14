@@ -31,7 +31,7 @@ namespace PFDDemo
             pfd.AirSpeed.MinimumValue = trackAirSpeedMin.Value;
             pfd.AirSpeed.MaximumValue = trackAirSpeedMax.Value;
 
-            pfd.Compass.Value = trackCompassValue.Value;
+            pfd.Heading.Value = trackCompassValue.Value;
 
             pfd.AttitudeIndicator.RollAngle = trackHorizonRoll.Value;
             pfd.AttitudeIndicator.PitchAngle = trackHorizonPitch.Value;

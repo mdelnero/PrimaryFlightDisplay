@@ -15,8 +15,8 @@ namespace PrimaryFlightDisplay
         IIndicator Altitude { get; }
 
         /// <summary>
-        /// Compass.</summary>
-        IGauge Compass { get; }
+        /// Heading Indicator.</summary>
+        IIndicator Heading { get; }
 
         /// <summary>
         /// Attitude Indicator.</summary>

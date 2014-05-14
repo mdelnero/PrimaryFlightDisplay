@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace PrimaryFlightDisplay
+namespace PrimaryFlightDisplay.Indicators
 {
     /// <summary>
     /// Heading Indicator.</summary>
