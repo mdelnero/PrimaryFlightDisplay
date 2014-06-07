@@ -44,10 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Indicators\AttitudeIndicator.cs" />
-    <Compile Include="GraphicIndicator.cs" />
+    <Compile Include="Drawing\GraphicCanvas.cs" />
+    <Compile Include="Indicators\Attitude\CenterIndicator.cs" />
+    <Compile Include="Indicators\Attitude\Horizon.cs" />
+    <Compile Include="Indicators\Attitude\PitchGrid.cs" />
     <Compile Include="Indicators\HeadingIndicator.cs" />
     <Compile Include="IAttitudeIndicator.cs" />
-    <Compile Include="IGraphicIndicator.cs" />
+    <Compile Include="Drawing\IGraphicCanvas.cs" />
     <Compile Include="IIndicator.cs" />
     <Compile Include="Indicator.cs" />
     <Compile Include="IPrimaryFlightDisplay.cs" />

@@ -31,28 +31,4 @@ namespace PrimaryFlightDisplay
         /// </summary>
         long MinorScaleGraduation { get; set; }
     }
-
-    /// <summary>
-    /// Airspeed Indicator Interface.</summary>
-    public interface IAirspeedIndicator : IIndicator
-    {
-    }
-
-    /// <summary>
-    /// Altitude Indicator Interface.</summary>
-    public interface IAltitudeIndicator : IIndicator
-    {
-    }
-
-    /// <summary>
-    /// Heading Indicator Interface.</summary>
-    public interface IHeadingIndicator : IIndicator
-    {
-    }
-
-    /// <summary>
-    /// Vertical Velocity Indicator Interface.</summary>
-    public interface IVerticalVelocityIndicator : IIndicator
-    {
-    }
 }

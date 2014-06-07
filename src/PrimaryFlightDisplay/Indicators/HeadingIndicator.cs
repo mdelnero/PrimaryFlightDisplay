@@ -4,7 +4,7 @@ namespace PrimaryFlightDisplay.Indicators
 {
     /// <summary>
     /// Heading Indicator.</summary>
-    public class HeadingIndicator : Indicator, IHeadingIndicator
+    public class HeadingIndicator : Indicator
     {
         /// <summary>
         /// New Drawing Envelope received.</summary>

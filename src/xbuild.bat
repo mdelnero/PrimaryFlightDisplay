@@ -1,0 +1,1 @@
+msbuild PrimaryFlightDisplay.sln /verbosity:minimal /logger:"c:\users\mdelnero\documents\visual studio 2013\Projects\BuildAgent\BuildAgent\bin\Debug\BuildAgent.dll"

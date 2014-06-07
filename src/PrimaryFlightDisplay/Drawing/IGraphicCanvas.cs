@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 
-namespace PrimaryFlightDisplay
+namespace PrimaryFlightDisplay.Drawing
 {
     /// <summary>
     /// Graphic Indicator Interface.
     /// </summary>
-    public interface IGraphicIndicator
+    public interface IGraphicCanvas
     {
         /// <summary>
         /// Major Graduation Size in Pixels.</summary>

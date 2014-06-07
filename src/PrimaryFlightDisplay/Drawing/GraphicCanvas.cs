@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PrimaryFlightDisplay
+namespace PrimaryFlightDisplay.Drawing
 {
     /// <summary>
     /// Graphic Indicator.</summary>
-    public abstract class GraphicIndicator : 
-        IGraphicIndicator, 
+    public abstract class GraphicCanvas : 
+        IGraphicCanvas, 
         IDisposable
     {
         /// <summary>

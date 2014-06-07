@@ -1,10 +1,11 @@
-﻿
+﻿using PrimaryFlightDisplay.Drawing;
+
 namespace PrimaryFlightDisplay
 {
     /// <summary>
     /// Base Indicator.</summary>
-    public abstract class Indicator : 
-        GraphicIndicator, 
+    public abstract class Indicator :
+        GraphicCanvas, 
         IIndicator
     {
         /// <summary>
