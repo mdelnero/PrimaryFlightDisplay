@@ -17,6 +17,8 @@ namespace PFDDemo
             InitializeComponent();
 
             UpdateAltitudeGaugeParams();
+            
+            // Test
         }
 
         void UpdateAltitudeGaugeParams()
